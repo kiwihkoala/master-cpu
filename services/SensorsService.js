@@ -5,18 +5,25 @@ var debug = require('debug')('iot-master-cpu:server:services:sensors');
 var FileReader = require('../services/FileReaderService');
 var TemperatureSensor = require('../models/TemperatureSensor');
 var FanSensor = require('../models/FanSensor');
+var Files = require('../constants/Files');
 
 function SensorsService() {
 }
 
+SensorsService.files = Files.ODROID.XU4;
+
 SensorsService.fan = function (response) {
-    // ODROID XU4 FAN SPEED FILE LOCATION
-    FileReader.read('/sys/devices/odroid_fan.14/pwm_duty', response, FanSensor.parse);
+    if (!SensorsService.files.hasOwnProperty('FanSensor'))
+        response({failed: true, message: '[FanSensor] SENSOR NOT AVAILABLE FOR THIS MODULE'});
+
+    FileReader.read(SensorsService.files.FanSensor, response, FanSensor.parse);
 };
 
 SensorsService.temperature = function (response) {
-    // ODROID XU4 FAN SPEED FILE LOCATION
-    FileReader.read('/sys/devices/10060000.tmu/temp', response, TemperatureSensor.parse);
+    if (!SensorsService.files.hasOwnProperty('TemperatureSensor'))
+        response({failed: true, message: '[TemperatureSensor] SENSOR NOT AVAILABLE FOR THIS MODULE'});
+
+    FileReader.read(SensorsService.files.TemperatureSensor, response, TemperatureSensor.parse);
 };
 
 module.exports = SensorsService;

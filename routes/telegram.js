@@ -30,7 +30,10 @@ function telegramRequest(method, message, result) {
             result({chatId: chatId, message: JSON.stringify(response)});
         });
     } catch (e) {
-        return result({chatId: chatId, message: '2 - NOT A VALID REQUEST'});
+        if (method !== 'start')
+            result({chatId: chatId, message: '2 - NOT A VALID REQUEST'});
+
+        result({chatId: chatId, message: 'Welcome to the IOT WORLD, please follow me! :D'});
     }
 }
 

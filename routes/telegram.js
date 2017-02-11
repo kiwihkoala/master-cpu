@@ -5,11 +5,12 @@ var express = require('express');
 var router = express.Router();
 var debug = require('debug')('iot-master-cpu:server:routes:telegram');
 var SensorsService = require('../services/SensorsService');
+var Keys = require('../constants/Keys');
 
 debug('STARTING ROUTE: /TELEGRAM');
 
 var TelegramBot = require('node-telegram-bot-api');
-var token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+var token = Keys.TELEGRAM;
 var bot = new TelegramBot(token, {polling: true});
 
 bot.onText(/\/(.+)/, function (message, match) {
